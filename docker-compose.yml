@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  sep-project:
+    build: sep-project
+    ports: 
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://sistema_esc:3306/sep_bd?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DDL_AUTO: update
+      PORT: 8080
+      SECRET_KEY: 4kwx3w1QMsfgpLLriG8dGMtvf2+/gzzYxQnw3aCW3jA=
+      EXPIRATION: 900000
+      REFRESH_EXPIRATION: 604800000
+    restart: always
+    depends_on:
+      sistema_esc:
+        condition: service_healthy
+  sistema_esc:
+    image: mysql:8.0.32
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASWORD: root
+      MYSQL_DATABASE: sep_bd
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+
+    

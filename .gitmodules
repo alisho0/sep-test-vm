@@ -1,0 +1,3 @@
+[submodule "sep-project"]
+	path = sep-project
+	url = https://github.com/alisho0/sep-project.git
